@@ -158,15 +158,15 @@ yarn build
 
 ### Презентер События, возникающие при взаимодействии пользователя с интерфейсом.
 
-items:changed - обновление списка продуктов
-modal:open - открытие модального окна
-modal:closed - закрытие модального окна
-card:addToBasket - добавление товара в корзину
-basket:changed - обновление интерфейса корзины
-order:changed - изменения в заказе
-address:change - изменение адреса
-contacts:change - изменение контактов
-error:changed - ошибка формы
-order:submit - подтверджение формы оплаты
-contacts:submit - подтверджение формы контактов
+- items:changed - обновление списка продуктов
+- modal:open - открытие модального окна
+- modal:closed - закрытие модального окна
+- card:addToBasket - добавление товара в корзину
+- basket:changed - обновление интерфейса корзины
+- order:changed - изменения в заказе
+- address:change - изменение адреса
+- contacts:change - изменение контактов
+- error:changed - ошибка формы
+- order:submit - подтверджение формы оплаты
+- contacts:submit - подтверджение формы контактов
 
