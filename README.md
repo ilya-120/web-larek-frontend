@@ -149,7 +149,6 @@ yarn build
 - `setAddress` - отвечает за значение адреса доставки.
 - `togglePayment` - переключает активное состояние кнопок выбора способа оплаты.
 
-
 #### Класс Contacts
 Этот класс реализует форму для ввода контактной информации (наследуемый от Form).
 
@@ -172,3 +171,42 @@ yarn build
 - order:submit - подтверджение формы оплаты
 - contacts:submit - подтверджение формы контактов
 - payment:toggle - смена способа оплаты
+
+### Данные и типы данных, используемые в приложении
+
+#### Интерфейс для модели данных товара
+```
+export interface IProduct {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  image: string;
+}
+```
+
+#### Интерфейс для модели данных заказа
+```
+export interface IOrder {
+  items: string[];
+  total: number;
+  email: string;
+  phone: string;
+  address: string;
+  payment: string;
+}
+```
+
+#### Интерфейс для обработки ответа при оформлении заказа
+```
+export interface IOrderSuccess {
+  id: string;
+  total: number;
+}
+```
+
+#### Тип данных для обработки ошибки
+```
+export type FormError = Partial<Record<keyof IOrder, string>>;
+```
