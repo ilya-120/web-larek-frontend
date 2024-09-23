@@ -16,7 +16,7 @@ export interface IOrder {
     payment: string;
 }
 
-export type FormError = Partial<Record<keyof IOrder, string>>;
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 export interface IOrderSuccess {
     id: string;
@@ -25,7 +25,7 @@ export interface IOrderSuccess {
 
 export interface IOrderResult extends IOrder {
     id: string;
-    error?: string;
+    errors?: string;
 }
 
 export interface IShopAPI {
@@ -40,7 +40,7 @@ export interface IAppState {
     order: IOrder | null;
     basket: string[] | null;
     preview: string | null;
-    formError: FormError;
+    formErrors: FormErrors;
 
     // API
     setCatalog(): Promise<IProduct[]>;
@@ -49,7 +49,7 @@ export interface IAppState {
     // Дополнительные методы
     clearBasket(): void;
     clearOrder(): void;
-    validateOrder(data: FormError): boolean;
+    validateOrder(data: FormErrors): boolean;
 
     // Действия пользователя
     selectProduct(id: string): void;
