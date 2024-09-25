@@ -169,7 +169,6 @@ yarn build
 - `setContactField(field: keyof IContactsForm, value: string)` - отвечает за передачу данных из формы контактов.
 - `clearBasket(): void` - отвечает за очистку корзины.
 - `clearOrder(): void` - очищает данные заказа.
-- `getBasketTotal(): number` - позволяет получить количество товаров в корзине.
 - `validateContact()` - отвечает за валидацию данных в форме контактов.
 - `validateOrder()` - отвечает за валидацию данных в заказе.
 - `setCatalog(): Promise<Product[]>` - устанавливает каталог продуктов.
@@ -329,7 +328,7 @@ yarn build
 Методы (сеттеры):
 
 - `set address(value: string)` - сеттер для адреса.
-- `set payment(value: PaymentMethods)` - сеттер для способа оплаты.
+- `toggleButtons(toggleOn: HTMLElement)` - переключает способ оплаты.
 
 
 #### Класс Contacts
@@ -371,19 +370,26 @@ yarn build
 ### Презентер События, возникающие при взаимодействии пользователя с интерфейсом.
 
 - items:changed - обновление списка продуктов
-- modal:openModal - открытие модального окна
-- modal:closeModal - закрытие модального окна
+- modal:open - открытие модального окна
+- modal:close - закрытие модального окна
 - product:add - добавление товара в корзину
 - product:delete - удаление товара из корзины
+- product:toggle - переключение добавить удалить товар
+- basket:open - открытие корзины
 - basket:changed - обновление интерфейса корзины
 - counter:changed - обновление счетика корзины
+- order:open - открытие формы заказа
 - order:changed - изменения в заказе
+- order:ready - валидность формы оплаты
+- order:submit - подтверджение формы оплаты
 - address:change - изменение адреса
 - contacts:change - изменение контактов
-- errors:changed - ошибка формы
-- order:submit - подтверджение формы оплаты
+- contact:ready - валидность формы контактов
 - contacts:submit - подтверджение формы контактов
+- errors:changed - ошибка формы
 - payment:toggle - смена способа оплаты
+- card:select - открытие карточки
+- preview:changed - просмотр продукта
 
 ### Данные и типы данных, используемые в приложении
 
