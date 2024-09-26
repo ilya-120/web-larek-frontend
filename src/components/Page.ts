@@ -1,8 +1,9 @@
 import { Component } from './base/Component';
 import { IEvents } from '../components/base/events';
 import { ensureElement } from '../utils/utils';
+import { eventsSelectors } from '../utils/constants';
 
-export interface IPage{
+export interface IPage {
   counter: number;
   gallery: HTMLElement[];
 }
@@ -24,11 +25,11 @@ export class Page extends Component<IPage> {
   }
 
   private handleBasketClick = () => {
-    this.events.emit('basket:open');
+    this.events.emit(eventsSelectors.basketOpen);
   };
 
   set counter(value: number) {
-    this._counter.textContent = String(value);
+    this.setText(this._counter, String(value));
   }
 
   set gallery(items: HTMLElement[]) {
@@ -37,6 +38,6 @@ export class Page extends Component<IPage> {
   }
 
   set locked(value: boolean) {
-    this._wrapper.classList.toggle('page__wrapper_locked', value);
+    this.toggleClass(this._wrapper, 'page__wrapper_locked', value);
   }
 }

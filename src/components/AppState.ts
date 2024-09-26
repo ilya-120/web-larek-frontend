@@ -1,4 +1,5 @@
 import { FormErrors, IAppState, IOrder, IProduct } from "../types";
+import { eventsSelectors } from "../utils/constants";
 import { Model } from "./base/Model";
 import { IContacts } from "./Contacts";
 import { IOrderDetails } from "./Order";
@@ -22,7 +23,7 @@ export class Order extends Model<IOrder> {
   address: string;
   payment: string;
   email: string;
-	phone: string;
+  phone: string;
 }
 
 export class AppState extends Model<IAppState> {
@@ -42,7 +43,7 @@ export class AppState extends Model<IAppState> {
 
   selectProduct(item: IProduct): void {
     this.preview = item.id;
-    this.emitChanges('preview:changed', item);
+    this.emitChanges(eventsSelectors.previewChanged, item);
   }
   addProduct(item: IProduct): void {
     if (this.basket?.includes(item)) return;
@@ -58,21 +59,21 @@ export class AppState extends Model<IAppState> {
   }
 
   refreshBasket(): void {
-    this.emitChanges('counter:changed', this.basket);
-    this.emitChanges('basket:changed', this.basket);
+    this.emitChanges(eventsSelectors.counterChanged, this.basket);
+    this.emitChanges(eventsSelectors.basketChanged, this.basket);
   }
 
   setOrderField(field: keyof IOrderDetails, value: string) {
     this.order[field] = value;
     if (this.validateOrder()) {
-      this.events.emit('order:ready', this.order);
+      this.events.emit(eventsSelectors.orderReady, this.order);
     }
   }
 
   setContactField(field: keyof IContacts, value: string) {
     this.order[field] = value;
     if (this.validateContact()) {
-      this.events.emit('contact:ready', this.order);
+      this.events.emit(eventsSelectors.contactReady, this.order);
     }
   }
 
@@ -80,7 +81,7 @@ export class AppState extends Model<IAppState> {
     this.basket = [];
     this.refreshBasket()
   }
-  
+
   clearOrder(): void {
     this.order = {
       items: [],
@@ -93,15 +94,20 @@ export class AppState extends Model<IAppState> {
   }
 
   validateContact() {
+    const validPhone = /[+78][0-9]{10,11}/;
+    const validEmail =
+      /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/;
+
     const errors: typeof this.formErrors = {};
-    if (!this.order.email) {
-      errors.email = 'Необходимо указать email';
+    if (!this.order.email || !validEmail.test(this.order.email)) {
+      errors.email = 'укажите корректный email';
     }
-    if (!this.order.phone) {
-      errors.phone = 'Необходимо указать телефон';
+
+    if (!this.order.phone || !validPhone.test(this.order.phone)) {
+      errors.phone = 'введите корректный номер';
     }
     this.formErrors = errors;
-    this.events.emit('formErrors:change', this.formErrors);
+    this.events.emit(eventsSelectors.formErrorsChange, this.formErrors);
     return Object.keys(errors).length === 0;
   }
 
@@ -111,7 +117,7 @@ export class AppState extends Model<IAppState> {
       errors.address = 'Необходимо указать адрес доставки'
     }
     this.formErrors = errors;
-    this.events.emit('formErrors:change', this.formErrors);
+    this.events.emit(eventsSelectors.formErrorsChange, this.formErrors);
     return Object.keys(errors).length === 0;
   }
 

@@ -28,6 +28,6 @@ export class Success extends Component<ISuccess> {
         return this._description.textContent;
     }
     set description(value: string) {
-        this._description.textContent = `Списано ${value} синапсов`;
+        this.setText(this._description, `Списано ${value} синапсов`);
     }
 }

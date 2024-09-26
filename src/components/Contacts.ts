@@ -7,23 +7,27 @@ export interface IContacts {
 }
 
 export class Contacts extends Form<IContacts> {
+  private _inputPhone: HTMLInputElement;
+  private _inputEmail: HTMLInputElement;
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
+    this._inputPhone = this.container.elements.namedItem('phone') as HTMLInputElement;
+    this._inputEmail = this.container.elements.namedItem('email') as HTMLInputElement;
   }
 
   get phone(): string {
-    return (this.container.elements.namedItem('phone') as HTMLInputElement).value;
+    return this._inputPhone.value;
   }
 
   set phone(value: string) {
-    (this.container.elements.namedItem('phone') as HTMLInputElement).value = value;
+    this._inputPhone.value = value;
   }
 
   get email(): string {
-    return (this.container.elements.namedItem('email') as HTMLInputElement).value;
+    return this._inputEmail.value;
   }
 
   set email(value: string) {
-    (this.container.elements.namedItem('email') as HTMLInputElement).value = value;
+    this._inputEmail.value = value;
   }
 }

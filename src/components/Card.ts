@@ -3,20 +3,20 @@ import { IProduct } from '../types';
 import { ensureElement } from '../utils/utils';
 
 const ProductCategory: { [key: string]: string } = {
-    "софт-скил": "card__category_soft",
-    "хард-скил": "card__category_hard",
-    "кнопка": "card__category_button",
-    "дополнительное": "card__category_additional",
-    "другое": "card__category_other"
-  }
+  "софт-скил": "card__category_soft",
+  "хард-скил": "card__category_hard",
+  "кнопка": "card__category_button",
+  "дополнительное": "card__category_additional",
+  "другое": "card__category_other"
+}
 
 interface ICardActions {
   onClick: (event: MouseEvent) => void;
 }
 
-export interface ICards extends IProduct{
+export interface ICards extends IProduct {
   index?: string;
-  buttonTitle? : string;
+  buttonTitle?: string;
 }
 
 export class Card extends Component<ICards> {
@@ -48,7 +48,7 @@ export class Card extends Component<ICards> {
 
   disableButton(value: number | null) {
     if (value === null && this._button) {
-      this._button.disabled = true;
+      this.setDisabled(this._button, true);
     }
   }
 
@@ -59,10 +59,10 @@ export class Card extends Component<ICards> {
   get id(): string {
     return this.container.dataset.id || '';
   }
-  
+
   set buttonText(value: string) {
     if (this._button) {
-      this._button.textContent = value;
+      this.setText(this._button, value);
     }
   }
   set title(value: string) {
@@ -84,7 +84,7 @@ export class Card extends Component<ICards> {
 
   set category(value: string) {
     this.setText(this._category, value);
-    this._category?.classList.add(ProductCategory[value])
+    this.toggleClass(this._category, ProductCategory[value], true)
   }
 
   get category(): string {
@@ -92,7 +92,7 @@ export class Card extends Component<ICards> {
   }
 
   set index(value: string) {
-    this._index.textContent = value;
+    this.setText(this._index, value);
   }
 
   get index(): string {

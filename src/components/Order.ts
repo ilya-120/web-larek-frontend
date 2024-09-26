@@ -20,7 +20,7 @@ export class Order extends Form<IOrderDetails> {
 
     this._card = ensureElement<HTMLButtonElement>('button[name="card"]', this.container);
     this._cash = ensureElement<HTMLButtonElement>('button[name="cash"]', this.container);
-    this._card.classList.add('button_alt-active');
+    this.toggleClass(this._card, 'button_alt-active');
 
     if (actions?.onClick) {
       this.addButtonClickHandler(actions.onClick);
@@ -38,7 +38,7 @@ export class Order extends Form<IOrderDetails> {
   }
 
   toggleButtons(toggleOn: HTMLElement) {
-    this._card.classList.toggle('button_alt-active', toggleOn === this._card);
-    this._cash.classList.toggle('button_alt-active', toggleOn === this._cash);
+    this.toggleClass(this._card, 'button_alt-active', toggleOn === this._card);
+    this.toggleClass(this._cash, 'button_alt-active', toggleOn === this._cash);
   }
 }

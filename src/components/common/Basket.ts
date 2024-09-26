@@ -1,6 +1,7 @@
 import { Component } from '../base/Component';
 import { createElement, ensureElement } from '../../utils/utils';
 import { EventEmitter } from '../base/events';
+import { eventsSelectors } from '../../utils/constants';
 
 interface IBasketView {
   items: HTMLElement[];
@@ -21,17 +22,17 @@ export class Basket extends Component<IBasketView> {
 
     if (this._button) {
       this._button.addEventListener('click', () => {
-        events.emit('order:open');
+        events.emit(eventsSelectors.orderOpen);
       });
     }
 
     this.items = [];
-    this._button.disabled = true;
+    this.setDisabled(this._button, true);
   }
 
   toggleButton(isDisabled: boolean) {
     if (this._button) {
-      this._button.disabled = isDisabled;
+      this.setDisabled(this._button, isDisabled);
     }
   }
 
