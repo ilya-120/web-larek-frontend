@@ -3,7 +3,7 @@ export const CDN_URL = `${process.env.API_ORIGIN}/content/weblarek`;
 
 export const settings = {};
 
-export enum eventsSelectors {
+export enum EventsSelectors {
     orderSubmit = 'order:submit',
     formErrorsChange = 'formErrors:change',
     cardSelect = 'card:select',

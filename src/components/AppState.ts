@@ -1,5 +1,5 @@
 import { FormErrors, IAppState, IOrder, IProduct } from "../types";
-import { eventsSelectors } from "../utils/constants";
+import { EventsSelectors } from "../utils/constants";
 import { Model } from "./base/Model";
 import { IContacts } from "./Contacts";
 import { IOrderDetails } from "./Order";
@@ -43,7 +43,7 @@ export class AppState extends Model<IAppState> {
 
   selectProduct(item: IProduct): void {
     this.preview = item.id;
-    this.emitChanges(eventsSelectors.previewChanged, item);
+    this.emitChanges(EventsSelectors.previewChanged, item);
   }
   addProduct(item: IProduct): void {
     if (this.basket?.includes(item)) return;
@@ -59,21 +59,21 @@ export class AppState extends Model<IAppState> {
   }
 
   refreshBasket(): void {
-    this.emitChanges(eventsSelectors.counterChanged, this.basket);
-    this.emitChanges(eventsSelectors.basketChanged, this.basket);
+    this.emitChanges(EventsSelectors.counterChanged, this.basket);
+    this.emitChanges(EventsSelectors.basketChanged, this.basket);
   }
 
   setOrderField(field: keyof IOrderDetails, value: string) {
     this.order[field] = value;
     if (this.validateOrder()) {
-      this.events.emit(eventsSelectors.orderReady, this.order);
+      this.events.emit(EventsSelectors.orderReady, this.order);
     }
   }
 
   setContactField(field: keyof IContacts, value: string) {
     this.order[field] = value;
     if (this.validateContact()) {
-      this.events.emit(eventsSelectors.contactReady, this.order);
+      this.events.emit(EventsSelectors.contactReady, this.order);
     }
   }
 
@@ -107,7 +107,7 @@ export class AppState extends Model<IAppState> {
       errors.phone = 'введите корректный номер';
     }
     this.formErrors = errors;
-    this.events.emit(eventsSelectors.formErrorsChange, this.formErrors);
+    this.events.emit(EventsSelectors.formErrorsChange, this.formErrors);
     return Object.keys(errors).length === 0;
   }
 
@@ -117,7 +117,7 @@ export class AppState extends Model<IAppState> {
       errors.address = 'Необходимо указать адрес доставки'
     }
     this.formErrors = errors;
-    this.events.emit(eventsSelectors.formErrorsChange, this.formErrors);
+    this.events.emit(EventsSelectors.formErrorsChange, this.formErrors);
     return Object.keys(errors).length === 0;
   }
 

@@ -1,7 +1,7 @@
 import { Component } from './base/Component';
 import { IEvents } from '../components/base/events';
 import { ensureElement } from '../utils/utils';
-import { eventsSelectors } from '../utils/constants';
+import { EventsSelectors } from '../utils/constants';
 
 export interface IPage {
   counter: number;
@@ -25,7 +25,7 @@ export class Page extends Component<IPage> {
   }
 
   private handleBasketClick = () => {
-    this.events.emit(eventsSelectors.basketOpen);
+    this.events.emit(EventsSelectors.basketOpen);
   };
 
   set counter(value: number) {

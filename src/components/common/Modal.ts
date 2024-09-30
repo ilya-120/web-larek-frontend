@@ -1,7 +1,7 @@
 import { Component } from '../base/Component';
 import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/events';
-import { eventsSelectors } from '../../utils/constants';
+import { EventsSelectors } from '../../utils/constants';
 
 export interface IModalData {
     content: HTMLElement;
@@ -41,14 +41,14 @@ export class Modal extends Component<IModalData> {
     open() {
         this._toggleModal();
         document.addEventListener('keydown', this._handleEscape);
-        this.events.emit(eventsSelectors.modalOpen);
+        this.events.emit(EventsSelectors.modalOpen);
     }
 
     close() {
         this._toggleModal(false);
         document.removeEventListener('keydown', this._handleEscape);
         this.content = null!;
-        this.events.emit(eventsSelectors.modalClose);
+        this.events.emit(EventsSelectors.modalClose);
     }
 
     render(data: IModalData): HTMLElement {

@@ -1,6 +1,6 @@
 import './scss/styles.scss';
 import { ShopAPI } from './components/ShopApi';
-import { API_URL, CDN_URL, eventsSelectors } from './utils/constants';
+import { API_URL, CDN_URL, EventsSelectors } from './utils/constants';
 import { EventEmitter } from './components/base/events';
 import { AppState, CatalogChangeEvent, Product } from './components/AppState';
 import { Page } from './components/Page';
@@ -52,7 +52,7 @@ const success = new Success(cloneTemplate(successElm), {
 
 const basket = new Basket(cloneTemplate(basketElm), events);
 const order = new Order(cloneTemplate(orderElm), events, {
-    onClick: (ev: Event) => events.emit(eventsSelectors.paymentToggle, ev.target),
+    onClick: (ev: Event) => events.emit(EventsSelectors.paymentToggle, ev.target),
 });
 const contact = new Contacts(cloneTemplate(contactsElm), events);
 
@@ -89,7 +89,7 @@ const handleOrderSubmit = () => {
 const handlePreviewChanged = (item: Product) => {
     const card = new Card(cloneTemplate(cardPreviewElm), {
         onClick: () => {
-            events.emit(eventsSelectors.productToggle, item);
+            events.emit(EventsSelectors.productToggle, item);
             card.buttonText =
                 app.basket.indexOf(item) < 0 ? 'Купить' : 'Удалить из корзины';
         },
@@ -112,7 +112,7 @@ const handlePreviewChanged = (item: Product) => {
 events.on<CatalogChangeEvent>('items:changed', () => {
     pageContainer.gallery = app.catalog.map((item) => {
         const card = new Card(cloneTemplate(cardCatalogElm), {
-            onClick: () => events.emit(eventsSelectors.cardSelect, item),
+            onClick: () => events.emit(EventsSelectors.cardSelect, item),
         });
         return card.render({
             title: item.title,
@@ -124,7 +124,7 @@ events.on<CatalogChangeEvent>('items:changed', () => {
 });
 
 // Отправлена форма заказа
-events.on(eventsSelectors.orderSubmit, () => {
+events.on(EventsSelectors.orderSubmit, () => {
     modalContainer.render({
         content: contact.render({
             email: '',
@@ -136,7 +136,7 @@ events.on(eventsSelectors.orderSubmit, () => {
 });
 
 // Изменилось состояние валидации формы
-events.on(eventsSelectors.formErrorsChange, (errors: Partial<IOrder>) => {
+events.on(EventsSelectors.formErrorsChange, (errors: Partial<IOrder>) => {
     const { payment, address, email, phone } = errors;
     order.valid = !payment && !address;
     contact.valid = !email && !phone;
@@ -165,42 +165,42 @@ events.on(
 );
 
 // Открытие карточки
-events.on(eventsSelectors.cardSelect, handleCardSelect);
+events.on(EventsSelectors.cardSelect, handleCardSelect);
 
 // Просмотр продукта
-events.on(eventsSelectors.previewChanged, handlePreviewChanged);
+events.on(EventsSelectors.previewChanged, handlePreviewChanged);
 
 // Открытие модального окна
-events.on(eventsSelectors.modalOpen, handleModalOpen);
+events.on(EventsSelectors.modalOpen, handleModalOpen);
 
 // Закрытие модального окна
-events.on(eventsSelectors.modalClose, handleModalClose);
+events.on(EventsSelectors.modalClose, handleModalClose);
 
 // Добавление товара
-events.on(eventsSelectors.productAdd, (item: Product) => {
+events.on(EventsSelectors.productAdd, (item: Product) => {
     app.addProduct(item);
 });
 
 // Удаление товара
-events.on(eventsSelectors.productDelete, (item: Product) => {
+events.on(EventsSelectors.productDelete, (item: Product) => {
     app.removeProduct(item);
 });
 
 // Переключение добавить удалить товар
-events.on(eventsSelectors.productToggle, (item: Product) => {
+events.on(EventsSelectors.productToggle, (item: Product) => {
     if (app.basket.indexOf(item) < 0) {
-        events.emit(eventsSelectors.productAdd, item);
+        events.emit(EventsSelectors.productAdd, item);
     } else {
-        events.emit(eventsSelectors.productDelete, item);
+        events.emit(EventsSelectors.productDelete, item);
     }
 });
 
 // Обновление интерфейса корзины
-events.on(eventsSelectors.basketChanged, (items: Product[]) => {
+events.on(EventsSelectors.basketChanged, (items: Product[]) => {
     basket.items = items.map((item, index) => {
         const card = new Card(cloneTemplate(cardBasketElm), {
             onClick: () => {
-                events.emit(eventsSelectors.productDelete, item);
+                events.emit(EventsSelectors.productDelete, item);
             },
         });
         return card.render({
@@ -217,19 +217,19 @@ events.on(eventsSelectors.basketChanged, (items: Product[]) => {
 });
 
 // Обновление счетика корзины
-events.on(eventsSelectors.counterChanged, () => {
+events.on(EventsSelectors.counterChanged, () => {
     pageContainer.counter = app.basket.length;
 });
 
 // Открытие корзины
-events.on(eventsSelectors.basketOpen, () => {
+events.on(EventsSelectors.basketOpen, () => {
     modalContainer.render({
         content: basket.render({}),
     });
 });
 
 // Открытие формы заказа
-events.on(eventsSelectors.orderOpen, () => {
+events.on(EventsSelectors.orderOpen, () => {
     modalContainer.render({
         content: order.render({
             payment: '',
@@ -242,7 +242,7 @@ events.on(eventsSelectors.orderOpen, () => {
 });
 
 // Смена способа оплаты
-events.on(eventsSelectors.paymentToggle, (target: HTMLElement) => {
+events.on(EventsSelectors.paymentToggle, (target: HTMLElement) => {
     if (!target.classList.contains('button_alt-active')) {
         order.toggleButtons(target);
         app.order.payment = PaymentMethod[target.getAttribute('name')];
@@ -250,17 +250,17 @@ events.on(eventsSelectors.paymentToggle, (target: HTMLElement) => {
 });
 
 // Валидность формы оплаты
-events.on(eventsSelectors.orderReady, () => {
+events.on(EventsSelectors.orderReady, () => {
     order.valid = true;
 });
 
 // Валидность формы контактов
-events.on(eventsSelectors.contactReady, () => {
+events.on(EventsSelectors.contactReady, () => {
     contact.valid = true;
 });
 
 // Подтверджение формы контактов
-events.on(eventsSelectors.contactsSubmit, handleOrderSubmit);
+events.on(EventsSelectors.contactsSubmit, handleOrderSubmit);
 
 function fetchProductList() {
     api
